@@ -19,7 +19,7 @@ const Formulario = () => {
                 const data = await db.collection('registro').get()
                 const array = data.docs.map(item =>(
                     {
-                        ...item.data()
+                    id:item.id,...item.data()
                     }
                 ))
                 setData(array)
@@ -63,6 +63,17 @@ const Formulario = () => {
         setEdad('')
         setDireccion('')
         setTelefono('')
+    }
+
+    const eliminar= async (id) =>{
+        try{
+            const db = firebase.firestore()
+            await db.collection('registro').doc(id).delete()
+            const aux = data.filter(item => item.id !== id)
+            setData(aux)
+        }catch(error){
+            console.log(error)
+        }
     }
 
     return (
@@ -122,7 +133,7 @@ const Formulario = () => {
                                     {item.nombredireccion} -
                                     {item.nombretelefono} -
                                     </span>
-                                <button className='btn btn-danger btn-sm float-end mx-2' >Eliminar</button>
+                                    <button className='btn btn-danger btn-sm float-end mx-2' onClick={()=> eliminar(item.id)}>Eliminar</button>
                                 <button className='btn btn-warning btn-sm float-end' >editar</button>
                             </li>
                         ))
