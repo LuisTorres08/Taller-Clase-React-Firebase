@@ -9,6 +9,7 @@ const Formulario = () => {
     const [direccion,setDireccion] = useState('')
     const [telefono, setTelefono] = useState('')
     const [data, setData] = useState([])
+    const [foto, setFoto] = useState('')
     const [modoEdicion, setModoEdicion] = useState(false)
     const [id, setId] = useState('')
     const [error, setError] = useState(null)
@@ -34,8 +35,18 @@ const Formulario = () => {
 
     })
 
+    const fotos = async () => {
+        try {
+            const res = await fetch('https://picsum.photos/200')
+            setFoto(res.url)
+        } catch (error) {
+            
+        }
+    }
+
     const insertar = async (e) =>{
         e.preventDefault()
+        fotos()
 
         if(!nombre.trim()){
             setError('Campo nombre vacío')
@@ -280,6 +291,7 @@ const Formulario = () => {
                             <th>Edad</th>
                             <th>Direccion</th>
                             <th>Telefono</th>
+                            <th>Foto</th>
                             
                         </tr>
                     </thead>
@@ -292,6 +304,7 @@ const Formulario = () => {
                                 <td>{item.nombreAño}</td>
                                 <td>{item.nombredireccion}</td>
                                 <td>{item.nombretelefono}</td>
+                                <td><img src={item.foto} alt='img' height={40} width={40}/></td>
                                 <td><button className='btn btn-danger btn-sm float-end mx-2' onClick={()=> eliminar(item.id)}>Eliminar</button></td>
                                 <td> <button className='btn btn-warning btn-sm float-end' onClick={()=> editar(item)} >editar</button></td>
                             </tr>
